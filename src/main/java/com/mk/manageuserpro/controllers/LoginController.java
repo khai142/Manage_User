@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
-    @GetMapping("/login")
+    @GetMapping({"/login"})
     public String viewLoginPage(Model model, String error, String logout) {
         if (error != null)
             model.addAttribute("errorMsg", "Your username and password are invalid.");

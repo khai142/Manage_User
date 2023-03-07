@@ -2,9 +2,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" />
-    <title>ユーザ管理</title>
+    <title th:utext="#{label.title}"></title>
 </head>
 <body align="center">
+
+<div th:insert="header :: head"></div>
+
 <form name="f" th:action="@{/login}" method="POST">
     <center>
         <table class="tbl_input" cellpadding="4" cellspacing="0" width="400px">
@@ -13,7 +16,7 @@
                 <th></th>
             </tr>
             <tr>
-                <th colspan="2" align="left">アカウント名およびパスワードを入力してください</th>
+                <th colspan="2" align="left" th:utext="#{label.inputUserNamePassword}"></th>
             </tr>
             <tr>
                 <td class="errMsg" colspan="2">
@@ -21,20 +24,20 @@
                 </td>
             </tr>
             <tr align="left">
-                <td class="lbl_left">アカウント名:</td>
+                <td class="lbl_left" th:utext="#{label.username}">:</td>
                 <td align="left">
                     <input class="txBox" type="text" name="username" size="20"
                            onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" autofocus />
                 </td>
             </tr>
             <tr>
-                <td class="lbl_left">パスワード:</td>
+                <td class="lbl_left" th:utext="#{label.password}">:</td>
                 <td align="left"><input class="txBox" type="password" name="password" value="" size="22"
                                         onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" /></td>
             </tr>
             <tr>
                 <td></td>
-                <td align="left"><input class="btn btn_wider" type="submit" value="ログイン" /></td>
+                <td align="left"><input class="btn btn_wider" type="submit" th:value="#{label.login}" /></td>
             </tr>
         </table>
     </center>
