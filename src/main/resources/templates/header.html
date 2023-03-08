@@ -1,8 +1,24 @@
 <html>
+<head>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="js/javascript.js"></script>
+</head>
 <body>
-    <div id="header" th:fragment="head">
-        <a href="?lang=en" onclick="document.cookie='org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE=en'">English</a>
-        <a href="?lang=ja" onclick="document.cookie='org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE=ja'">Japanese</a>
+<div id="header" th:fragment="head">
+    <h1 th:utext="#{label.welcome}"></h1>
+    <div id="header-right">
+        <div id="multi-lang">
+            <a href="?lang=en" onclick="setLanguage('en)'">English</a>
+            <a href="?lang=ja" onclick="setLanguage('jp')">Japanese</a>
+        </div>
+
+        <form th:action="@{/logout}" method="get" id="logout">
+            <button class="btn btn-md btn-danger btn-block" name="registration"
+                    type="Submit">Logout
+            </button>
+        </form>
     </div>
+</div>
+
 </body>
 </html>

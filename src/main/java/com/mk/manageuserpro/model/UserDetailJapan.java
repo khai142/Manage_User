@@ -18,15 +18,17 @@ public class UserDetailJapan {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_detail_japan_id")
-    private int userDetailJapanId;
-    @Column(name = "user_id")
-    private int userId;
-    @Column(name = "code_level")
-    private String codeLevel;
+    private Long userDetailJapanId;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "code_level")
+    private JapanLevel japanLevel;
     @Column(name = "start_date")
     private Date startDate;
     @Column(name = "end_date")
     private Date endDate;
     @Column(name = "total")
-    private Date total;
+    private Integer total;
 }

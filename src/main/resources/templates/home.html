@@ -1,0 +1,125 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script type="text/javascript" src="js/user.js"></script>
+  <title th:utext="#{label.title}"></title>
+</head>
+<body>
+  <div th:insert="header :: head"></div>
+  <!-- Begin search condition -->
+  <form th:action="@{/users}" method="get" name="mainform">
+    <table class="tbl_input" border="0" width="90%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td>
+          &nbsp;
+        </td>
+      </tr>
+      <tr>
+        <td th:utext="#{label.home.home_header}"></td>
+      </tr>
+      <tr>
+        <td width="100%">
+          <table class="tbl_input" cellpadding="4" cellspacing="0">
+            <tr>
+              <td class="lbl_left" th:utext="#{label.home.search.name}">:</td>
+              <td align="left">
+                <input class="txBox" type="text" name="name" th:value="${seachName}" size="20"
+                       onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" autofocus/>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="lbl_left" th:utext="#{label.home.search.group}">:</td>
+              <td align="left" width="80px">
+                <select name="groupId" style="width: 150px">
+                  <option th:utext="#{label.home.search.all}" value=""></option>
+                    <th:block th:each="group : ${listGroup}">
+                      <th:block th:if="${group.groupId} == ${seachGroupId}">
+                        <option th:value="${ group.groupId }" th:utext="${group.groupName}" selected="selected"><</option>
+                      </th:block>
+                      <th:block th:unless="${group.groupId} == ${seachGroupId}">
+                        <option th:value="${ group.groupId }" th:utext="${group.groupName}"><</option>
+                      </th:block>
+                    </th:block>
+                </select>
+              </td>
+              <td align="left">
+                <input class="btn" type="submit" th:value="#{label.home.search.search}" />
+                <input class="btn" type="button" th:value="#{label.home.search.new}" onclick="window.location.href='AddUserInput.do'"/>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <!-- End search condition -->
+  </form>
+  <!-- Begin list user -->
+  <th:block th:if="${totalPage == 0}" >
+    <div class="msg" th:utext="#{msg.no_data}"></div>
+  </th:block>
+  <th:block th:unless="${totalPage == 0}" >
+    <table class="tbl_list" border="1" cellpadding="4" cellspacing="0" width="80%">
+      <tr class="tr2">
+        <th align="center" width="20px">ID</th>
+        <th align="left" th:utext="#{label.home.list.name}"></th>
+        <th align="left" th:utext="#{label.home.list.birthday}"></th>
+        <th align="left" th:utext="#{label.home.list.group}"></th>
+        <th align="left" th:utext="#{label.home.list.mail}"></th>
+        <th align="left" th:utext="#{label.home.list.japan_level}"></th>
+        <th align="left" th:utext="#{label.home.list.expire_date}"></th>
+        <th align="left" th:utext="#{label.home.list.score}"></th>
+      </tr>
+      <th:block th:each="user : ${listUser}">
+        <tr>
+          <td align="right"><a href="#" th:utext="${user.id}"></a></td>
+          <td th:utext="${user.name}"></td>
+          <td align="center" th:utext="${#dates.format(user.birthday, 'dd-MM-yyyy')}"></td>
+          <td th:utext="${user.group.groupName}"></td>
+          <td th:utext="${user.email}"></td>
+          <td th:utext="${user.userDetailJapan} ? ${user.userDetailJapan.japanLevel.nameLevel} : ''"></td>
+          <td align="center" th:utext="${user.userDetailJapan} ? ${#dates.format(user.userDetailJapan.endDate, 'dd-MM-yyyy')} : ''"></td>
+          <td th:utext="${user.userDetailJapan} ? ${user.userDetailJapan.total} : ''"></td>
+        </tr>
+      </th:block>
+    </table>
+  </th:block>
+  <!-- End list user -->
+
+  <!-- Begin  paging -->
+  <th:block th:if="${totalPage} > 1">
+<!--    <span th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"></span>-->
+    <div id="pagination"></div>
+    <input type="hidden" id="currentPage" disabled th:value="${currentPage}">
+    <input type="hidden" id="totalPage" disabled th:value="${totalPage}">
+    <script type="text/javascript" src="js/paging.js"></script>
+    <script type="text/javascript">
+      let currentPage = document.getElementById("currentPage").value;
+      let totalPage = document.getElementById("totalPage").value;
+      let rangeWithDots = pagination(currentPage, totalPage);
+      let currentUrl = window.location.href;
+      let htmlContent = "";
+      if (currentPage != 1){
+        htmlContent += '<a class="pagination--item" href="' + addParamToUrl(currentUrl, 'page', currentPage - 1) + '">Prev</a>';
+      }
+      rangeWithDots.forEach(element => {
+        if(element == currentPage){
+          htmlContent += '<span class="pagination--item is-selected">' + element + '</span>';
+        } else if (element == "...") {
+          htmlContent += '<span>  ...  <span>';
+        }else{
+          htmlContent += '<a class="pagination--item" href="'+ addParamToUrl(currentUrl, 'page', element) + '">' + element + '</a>';
+        }
+      });
+      if (currentPage != totalPage){
+        htmlContent += '<a class="pagination--item" href="' + addParamToUrl(currentUrl, 'page', parseInt(currentPage) + 1) + '">Next</a>';
+      }
+      document.getElementById("pagination").innerHTML = htmlContent;
+    </script>
+  </th:block>
+  <!-- End paging -->
+
+</body>
+</html>

@@ -6,7 +6,7 @@
 </head>
 <body align="center">
 
-<div th:insert="header :: head"></div>
+<div id="header" th:fragment="head"></div>
 
 <form name="f" th:action="@{/login}" method="POST">
     <center>
@@ -16,7 +16,7 @@
                 <th></th>
             </tr>
             <tr>
-                <th colspan="2" align="left" th:utext="#{label.inputUserNamePassword}"></th>
+                <th colspan="2" align="left" th:utext="#{label.input_username_password}"></th>
             </tr>
             <tr>
                 <td class="errMsg" colspan="2">
