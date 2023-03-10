@@ -1,6 +1,7 @@
 package com.mk.manageuserpro.service;
 
 import com.mk.manageuserpro.model.Role;
+import com.mk.manageuserpro.model.UserDetailJapan;
 import com.mk.manageuserpro.utils.Common;
 import com.mk.manageuserpro.utils.Constant;
 import com.mk.manageuserpro.model.Group;
@@ -13,18 +14,27 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import java.util.Arrays;
+import javax.transaction.Transactional;
 import java.util.HashSet;
 
 @Service
 public class UserServiceImpl implements UserService {
+    @PersistenceContext
+    private final EntityManager entityManager;
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(
+            EntityManager entityManager,
+            UserRepository userRepository,
+            BCryptPasswordEncoder bCryptPasswordEncoder
+    ) {
+        this.entityManager = entityManager;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -71,12 +81,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(User user) {
+    @Transactional
+    public User createUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(true);
         user.setRoles(new HashSet<Role>(user.getRoles()));
+        entityManager.persist(user);
 
-        return userRepository.save(user);
+        UserDetailJapan userDetailJapan = user.getUserDetailJapan();
+        userDetailJapan.setUser(user);
+        entityManager.persist(userDetailJapan);
+        return user;
     }
 
 }

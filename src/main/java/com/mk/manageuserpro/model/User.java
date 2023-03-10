@@ -28,8 +28,8 @@ public class User {
     @Column(name = "user_id")
     private Long id;
     @Column(name = "user_name")
-    @Length(min = 5, message = "*User name must have at least 5 characters")
-    @NotEmpty(message = "*Please provide a user name")
+    @Length(min = 5, message = "{err.username.min_length}")
+    @NotEmpty(message = "{err.username.required}")
     private String username;
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -37,18 +37,18 @@ public class User {
     @Valid
     private Group group;
     @Column(name = "email")
-    @Email(message = "*Please provide a valid Email")
-    @NotEmpty(message = "*Please provide an email")
+    @Email(message = "{err.email.valid")
+    @NotEmpty(message = "{err.email.required}")
     private String email;
     @Column(name = "password")
-    @Length(min = 5, message = "*Password must have at least 5 characters")
-    @NotEmpty(message = "*Please provide password")
+    @Length(min = 5, message = "{err.password.min_length}")
+    @NotEmpty(message = "{err.password.required}")
     private String password;
     @Column(name = "name")
-    @NotEmpty(message = "*Please provide name")
+    @NotEmpty(message = "{err.name.required}")
     private String name;
     @Column(name = "birthday")
-    @NotNull(message = "*Please provide birthday")
+    @NotNull(message = "{err.birthday.required}")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     @Column(name = "active")

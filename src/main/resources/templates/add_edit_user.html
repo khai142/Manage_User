@@ -153,13 +153,14 @@
               <td class="lbl_left" th:utext="#{label.add_edit_user.qualification_date} + ':'"></td>
               <td align="left">
                 <input type="date" class="form-control" autocomplete="off" th:field="*{userDetailJapan.startDate}"/>
+                <label th:if="${#fields.hasErrors('userDetailJapan.startDate')}" th:errors="*{userDetailJapan.startDate}" class="validation-message"></label>
               </td>
             </tr>
             <tr>
               <td class="lbl_left" th:utext="#{label.add_edit_user.expire_date} + ':'"></td>
               <td align="left">
                 <input type="date" class="form-control" autocomplete="off" th:field="*{userDetailJapan.endDate}"/>
-                <label th:if="${#fields.hasErrors('userDetailJapan')}" th:errors="*{userDetailJapan}" class="validation-message"></label>
+                <label th:if="${#fields.hasErrors('userDetailJapan.endDate')}" th:errors="*{userDetailJapan.endDate}" class="validation-message"></label>
               </td>
             </tr>
             <tr>
