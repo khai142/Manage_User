@@ -10,6 +10,4 @@ import java.util.List;
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
-    public List<Group> findAll();
-
 }

@@ -1,5 +1,6 @@
 package com.mk.manageuserpro.service;
 
+import com.mk.manageuserpro.model.Role;
 import com.mk.manageuserpro.utils.Common;
 import com.mk.manageuserpro.utils.Constant;
 import com.mk.manageuserpro.model.Group;
@@ -13,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -65,6 +68,15 @@ public class UserServiceImpl implements UserService {
             }
             return userRepository.findAll(specification, PageRequest.of(page, Constant.PAGE_SIZE));
         }
+    }
+
+    @Override
+    public User saveUser(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setActive(true);
+        user.setRoles(new HashSet<Role>(user.getRoles()));
+
+        return userRepository.save(user);
     }
 
 }

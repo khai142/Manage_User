@@ -1,15 +1,15 @@
 <html>
 <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <script src="js/javascript.js"></script>
+    <script src="js/language.js"></script>
 </head>
 <body>
 <div id="header" th:fragment="head">
     <h1 th:utext="#{label.welcome}"></h1>
     <div id="header-right">
         <div id="multi-lang">
-            <a href="?lang=en" onclick="setLanguage('en)'">English</a>
-            <a href="?lang=ja" onclick="setLanguage('jp')">Japanese</a>
+            <a href="?lang=en">English</a>
+            <a href="?lang=ja">Japanese</a>
         </div>
 
         <form th:action="@{/logout}" method="get" id="logout">

@@ -22,7 +22,7 @@ public class JapanLevel {
 	@Column(name = "name_level")
 	private String nameLevel;
 
-	@OneToMany(mappedBy = "japanLevel", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "japanLevel", cascade = CascadeType.MERGE)
 	private Collection<UserDetailJapan> userDetailJapans;
 
 }

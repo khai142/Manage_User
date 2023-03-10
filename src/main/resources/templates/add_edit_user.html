@@ -1,0 +1,195 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="js/user.js"></script>
+  <title th:utext="#{label.title}"></title>
+</head>
+<body>
+<div th:insert="header :: head"></div>
+
+<!-- Begin input user-->
+<form th:action="@{/addUser}" method="post" name="inputform" th:object="${user}">
+  <table class="tbl_input" border="0" width="75%" cellpadding="0" cellspacing="0">
+    <tr>
+      <th align="left">
+        <div style="padding-left:100px;" th:utext="#{label.add_edit_user.header}"></div>
+      </th>
+    </tr>
+    <tr>
+      <td align="left">
+        <div style="padding-left:100px;">
+          <table border="0" width="100%" class="tbl_input" cellpadding="4" cellspacing="0">
+            <tr>
+              <td class="lbl_left">
+                <font color="red">*</font>
+                <span th:utext="#{label.username} + ':'"></span>
+              </td>
+              <td align="left">
+                <th:block th:if="*{id == null}">
+                    <input class="txBox" type="text" th:field="*{username}" size="15"
+                           onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" autofocus/>
+                </th:block>
+                <th:block th:unless="*{id == null}">
+                    <input class="txBox" type="text" th:field="*{username}" size="15"
+                           onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" autofocus readonly="readonly"/>
+                </th:block>
+                <label th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="validation-message"></label>
+              </td>
+            </tr>
+            <tr>
+              <td class="lbl_left">
+                <font color="red">*</font>
+                <span th:utext="#{label.home.list.group} + ':'"></span>
+              </td>
+              <td align="left">
+                <select th:field="*{group.groupId}" style="max-width: 200px">
+                  <option value="" th:utext="#{label.add_edit_user.select}"></option>
+                  <th:block th:each="groupItem : ${listGroup}">
+                    <th:block th:if="${groupItem.groupId} == *{group.groupId}">
+                      <option th:value="${ groupItem.groupId }" th:utext="${groupItem.groupName}" selected="selected"></option>
+                    </th:block>
+                    <th:block th:unless="${groupItem.groupId} == *{group.groupId}">
+                      <option th:value="${ groupItem.groupId }" th:utext="${groupItem.groupName}"></option>
+                    </th:block>
+                  </th:block>
+                </select>
+                <label th:if="${#fields.hasErrors('group.groupId')}" th:errors="*{group.groupId}" class="validation-message"></label>
+              </td>
+            </tr>
+            <tr>
+              <td class="lbl_left">
+                <font color="red">*</font>
+                <span th:utext="#{label.home.list.name} + ':'"></span>
+              </td>
+              <td align="left">
+                <input class="txBox" type="text" th:field="*{name}" size="30"
+                       onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" />
+                <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></label>
+              </td>
+            </tr>
+            <tr>
+              <td class="lbl_left">
+                <font color="red">*</font>
+                <span th:utext="#{label.home.list.birthday} + ':'"></span>
+              </td>
+              <td align="left" class="input-group date">
+                <input type="date" class="form-control" id="birthday" autocomplete="off" th:field="*{birthday}"/>
+                <label th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="validation-message"></label>
+              </td>
+            </tr>
+            <tr>
+              <td class="lbl_left">
+                <font color="red">*</font>
+                <span th:utext="#{label.home.list.mail} + ':'"></span>
+              </td>
+              <td align="left">
+                <input class="txBox" type="email" th:field="*{email}" size="30"
+                       onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" />
+                <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
+              </td>
+            </tr>
+            <tr>
+              <td class="lbl_left">
+                <font color="red">*</font>
+                <span th:utext="#{label.add_edit_user.role} + ':'"></span>
+              </td>
+              <td align="left">
+                <select th:field="*{roles}" style="max-width: 200px">
+                  <option value="" th:utext="#{label.add_edit_user.select}"></option>
+                  <th:block th:each="role : ${listRole}">
+                    <th:block th:if="${role} == *{roles}">
+                      <option th:value="${ role.id }" th:utext="${role.role}" selected="selected"><</option>
+                    </th:block>
+                    <th:block th:unless="${role.id} == *{roles}">
+                      <option th:value="${ role.id }" th:utext="${role.role}"><</option>
+                    </th:block>
+                  </th:block>
+                </select>
+                <label th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}" class="validation-message"></label>
+              </td>
+            </tr>
+            <th:block th:if="*{id == null}">
+              <tr>
+                <td class="lbl_left">
+                  <font color="red">*</font>
+                  <span th:utext="#{label.password} + ':'"></span>
+                </td>
+                <td align="left">
+                  <input class="txBox" type="password" th:field="*{password}" size="30"
+                         onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" />
+                  <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message"></label>
+                </td>
+              </tr>
+<!--              <tr>-->
+<!--                <td class="lbl_left">パスワード（確認）:</td>-->
+<!--                <td align="left">-->
+<!--                  <input class="txBox" type="password" name="passwordConfirm" value="" size="30"-->
+<!--                         onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" />-->
+<!--                </td>-->
+<!--              </tr>-->
+            </th:block>
+            <tr>
+              <th align="left" colspan="2" th:utext="#{label.home.list.japan_level}"></th>
+            </tr>
+            <tr>
+              <td class="lbl_left" th:utext="#{label.add_edit_user.qualification}  + ':'"></td>
+              <td align="left">
+                <select th:field="*{userDetailJapan.japanLevel.codeLevel}" style="max-width: 200px">
+                  <option value="" th:utext="#{label.add_edit_user.select}"></option>
+                  <th:block th:each="japanLevel : ${listJapanLevel}">
+                    <th:block th:if="${japanLevel.codeLevel} == *{userDetailJapan?.japanLevel?.codeLevel}">
+                      <option th:value="${ japanLevel.codeLevel }" th:utext="${japanLevel.nameLevel}" selected="selected"></option>
+                    </th:block>
+                    <th:block th:unless="${japanLevel.codeLevel} == *{userDetailJapan?.japanLevel?.codeLevel}">
+                      <option th:value="${ japanLevel.codeLevel }" th:utext="${japanLevel.nameLevel}"></option>
+                    </th:block>
+                  </th:block>
+                </select>
+                <label th:if="${#fields.hasErrors('userDetailJapan.japanLevel.codeLevel')}" th:errors="*{userDetailJapan.japanLevel.codeLevel}" class="validation-message"></label>
+              </td>
+            </tr>
+            <tr>
+              <td class="lbl_left" th:utext="#{label.add_edit_user.qualification_date} + ':'"></td>
+              <td align="left">
+                <input type="date" class="form-control" autocomplete="off" th:field="*{userDetailJapan.startDate}"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="lbl_left" th:utext="#{label.add_edit_user.expire_date} + ':'"></td>
+              <td align="left">
+                <input type="date" class="form-control" autocomplete="off" th:field="*{userDetailJapan.endDate}"/>
+                <label th:if="${#fields.hasErrors('userDetailJapan')}" th:errors="*{userDetailJapan}" class="validation-message"></label>
+              </td>
+            </tr>
+            <tr>
+              <td class="lbl_left" th:utext="#{label.home.list.score} + ':'"></td>
+              <td align="left">
+                <input class="txBox" type="number" th:field="*{userDetailJapan.score}" size="3"
+                       onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" />
+                <label th:if="${#fields.hasErrors('userDetailJapan.score')}" th:errors="*{userDetailJapan.score}" class="validation-message"></label>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <div style="padding-left:100px;">&nbsp;</div>
+  <div style="padding-left:45px;">
+    <table border="0" cellpadding="4" cellspacing="0" width="300px">
+      <tr>
+        <th width="200px" align="center">&nbsp;</th>
+        <td>
+          <input class="btn" type="submit" th:value="#{label.add_edit_user.submit}" />
+        </td>
+        <td>
+          <input class="btn" type="button" th:value="#{label.add_edit_user.back}" onclick="window.location.href='users'" />
+        </td>
+      </tr>
+    </table>
+  </div>
+</form>
+<!-- End input -->
+</body>
+</html>

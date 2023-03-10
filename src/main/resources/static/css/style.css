@@ -84,6 +84,7 @@
 	text-align: left;
 	font-size: 13px;
 	width: 120px;
+	vertical-align: text-top;
 }
 
 .tbl_list {
@@ -106,14 +107,6 @@
 	width: 850px;
 }
 
-.japan_infor{
-	display: none;
-}
-
-.show{
-	display: table-row;
-}
-
 #pagination {
 	margin-top: 10px;
 }
@@ -129,3 +122,10 @@
 	 background-color: #f48024;
 	 color: white;
  }
+
+.validation-message {
+	display: block;
+	font-style: normal;
+	font-size: 12px;
+	color: #FF1C19;
+}

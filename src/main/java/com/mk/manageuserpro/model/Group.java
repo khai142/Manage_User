@@ -6,7 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -17,13 +20,14 @@ import java.util.Collection;
 public class Group {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id")
+    @NotNull(message = "*Please provide a group")
     private Long groupId;
 
     @Column(name = "group_name")
     private String groupName;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
 	private Collection<User> users;
 }

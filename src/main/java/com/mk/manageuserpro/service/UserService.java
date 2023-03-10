@@ -11,4 +11,6 @@ public interface UserService{
     public User findByUsername(String username);
 
     public Page<User> getTotalUsers(String name, String groupId, int page);
+
+    public User saveUser(User user);
 }

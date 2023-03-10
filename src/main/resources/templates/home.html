@@ -2,7 +2,6 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link href="css/style.css" rel="stylesheet" type="text/css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script type="text/javascript" src="js/user.js"></script>
   <title th:utext="#{label.title}"></title>
 </head>
@@ -35,19 +34,19 @@
               <td align="left" width="80px">
                 <select name="groupId" style="width: 150px">
                   <option th:utext="#{label.home.search.all}" value=""></option>
-                    <th:block th:each="group : ${listGroup}">
-                      <th:block th:if="${group.groupId} == ${seachGroupId}">
-                        <option th:value="${ group.groupId }" th:utext="${group.groupName}" selected="selected"><</option>
-                      </th:block>
-                      <th:block th:unless="${group.groupId} == ${seachGroupId}">
-                        <option th:value="${ group.groupId }" th:utext="${group.groupName}"><</option>
-                      </th:block>
+                  <th:block th:each="group : ${listGroup}">
+                    <th:block th:if="${group.groupId} == ${seachGroupId}">
+                      <option th:value="${ group.groupId }" th:utext="${group.groupName}" selected="selected"><</option>
                     </th:block>
+                    <th:block th:unless="${group.groupId} == ${seachGroupId}">
+                      <option th:value="${ group.groupId }" th:utext="${group.groupName}"><</option>
+                    </th:block>
+                  </th:block>
                 </select>
               </td>
               <td align="left">
                 <input class="btn" type="submit" th:value="#{label.home.search.search}" />
-                <input class="btn" type="button" th:value="#{label.home.search.new}" onclick="window.location.href='AddUserInput.do'"/>
+                <input class="btn" type="button" th:value="#{label.home.search.new}" onclick="window.location.href='addUser'"/>
               </td>
             </tr>
           </table>
@@ -81,7 +80,7 @@
           <td th:utext="${user.email}"></td>
           <td th:utext="${user.userDetailJapan} ? ${user.userDetailJapan.japanLevel.nameLevel} : ''"></td>
           <td align="center" th:utext="${user.userDetailJapan} ? ${#dates.format(user.userDetailJapan.endDate, 'dd-MM-yyyy')} : ''"></td>
-          <td th:utext="${user.userDetailJapan} ? ${user.userDetailJapan.total} : ''"></td>
+          <td th:utext="${user.userDetailJapan} ? ${user.userDetailJapan.score} : ''"></td>
         </tr>
       </th:block>
     </table>
