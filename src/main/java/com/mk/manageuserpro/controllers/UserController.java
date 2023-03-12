@@ -14,13 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -66,11 +64,8 @@ public class UserController {
 
     @GetMapping("/addUser")
     public String addUser(Model model) {
-
         model.addAttribute("user", new User());
-        model.addAttribute("listGroup", groupService.findAll());
-        model.addAttribute("listRole", roleService.findAll());
-        model.addAttribute("listJapanLevel", japanLevelService.findAll());
+        bindingDataDropDown(model);
         return "add_edit_user";
     }
 
@@ -81,11 +76,40 @@ public class UserController {
             Model model
     ) {
         User userExists = userService.findByUsername(user.getUsername());
-        if (userExists != null) {
+        boolean isAddUser = user.getId() == null;
+//      Username cannot be the same as another user
+        if (isAddUser && userExists != null) {
             bindingResult
                     .rejectValue("username", "error.user",
                             messageSource.getMessage("err.username.exist", null, LocaleContextHolder.getLocale()));
         }
+        validatePassword(user, bindingResult);
+        validateUserDetailJapan(user, bindingResult);
+        if (bindingResult.hasErrors()) {
+            bindingDataDropDown(model);
+            return "add_edit_user";
+        } else {
+            userService.createUser(user);
+            model.addAttribute("message", messageSource.getMessage("msg.add.success", null,
+                    LocaleContextHolder.getLocale()));
+            return "info";
+        }
+    }
+
+    private void validatePassword(User user, BindingResult bindingResult) {
+        if (Common.isEmpty(user.getPassword())) {
+            bindingResult
+                    .rejectValue("password", "error.user",
+                            messageSource.getMessage("err.password.required", null, LocaleContextHolder.getLocale()));
+        }
+        if (user.getPassword().length() < 5) {
+            bindingResult
+                    .rejectValue("password", "error.user",
+                            messageSource.getMessage("err.password.min_length", null, LocaleContextHolder.getLocale()));
+        }
+    }
+
+    private void validateUserDetailJapan(User user, BindingResult bindingResult) {
         UserDetailJapan userDetailJapan = user.getUserDetailJapan();
         if (!Common.isEmpty(user.getUserDetailJapan().getJapanLevel().getCodeLevel())) {
             Date starDate = userDetailJapan.getStartDate();
@@ -94,17 +118,20 @@ public class UserController {
                 if (starDate == null) {
                     bindingResult
                             .rejectValue("userDetailJapan.startDate", "error.user",
-                                    messageSource.getMessage("err.start_date.required", null, LocaleContextHolder.getLocale()));
+                                    messageSource.getMessage("err.start_date.required", null,
+                                            LocaleContextHolder.getLocale()));
                 }
                 if (endDate == null) {
                     bindingResult
                             .rejectValue("userDetailJapan.endDate", "error.user",
-                                    messageSource.getMessage("err.end_date.required", null, LocaleContextHolder.getLocale()));
+                                    messageSource.getMessage("err.end_date.required", null,
+                                            LocaleContextHolder.getLocale()));
                 }
             } else if (endDate.before(starDate)) {      // Require starDate greater than endDate
                 bindingResult
                         .rejectValue("userDetailJapan.endDate", "error.user",
-                                messageSource.getMessage("err.end_date.compare", null, LocaleContextHolder.getLocale()));
+                                messageSource.getMessage("err.end_date.compare", null,
+                                        LocaleContextHolder.getLocale()));
 
             }
             if (userDetailJapan.getScore() == null) {
@@ -112,17 +139,82 @@ public class UserController {
                         .rejectValue("userDetailJapan.score", "error.user",
                                 messageSource.getMessage("err.score.required", null, LocaleContextHolder.getLocale()));
             }
-
         }
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("listGroup", groupService.findAll());
-            model.addAttribute("listRole", roleService.findAll());
-            model.addAttribute("listJapanLevel", japanLevelService.findAll());
-            return "add_edit_user";
+    }
+
+    @GetMapping("/user/{id}")
+    public String showUser(@PathVariable(name = "id", required = true) Long userId, Model model) {
+        Optional<User> user = userService.findById(userId);
+        if (user.isEmpty()) {
+            model.addAttribute("message", messageSource.getMessage("msg.user_not_exist", null,
+                    LocaleContextHolder.getLocale()));
+            return "info";
         } else {
-            userService.createUser(user);
-            model.addAttribute("successMessage", messageSource.getMessage("msg.add.success", null, LocaleContextHolder.getLocale()));
+            model.addAttribute("user", user.get());
+            return "user_info";
+        }
+    }
+
+    @GetMapping("/user/{id}/edit")
+    public String showEditUserPage(@PathVariable(value = "id", required = true) Long userId, Model model) {
+        Optional<User> user = userService.findById(userId);
+        if (user.isEmpty()) {
+            model.addAttribute("message", messageSource.getMessage("msg.user_not_exist", null,
+                    LocaleContextHolder.getLocale()));
+            return "info";
+        } else {
+            model.addAttribute("user", user.get());
+            bindingDataDropDown(model);
+            return "add_edit_user";
+        }
+    }
+
+    @PostMapping("/user/{id}/edit")
+    public String editUser(
+            @PathVariable(name = "id") Long userId,
+            @Valid User user,
+            BindingResult bindingResult,
+            Model model
+    ) {
+//      User must be exist to edit
+        if (userService.findById(userId).isEmpty()) {
+            model.addAttribute("message", messageSource.getMessage("msg.user_not_exist", null,
+                    LocaleContextHolder.getLocale()));
             return "info";
         }
+        if (user.isUpdatePasswordFlag()) {
+            validatePassword(user, bindingResult);
+        }
+        validateUserDetailJapan(user, bindingResult);
+        bindingResult.resolveMessageCodes("error.user", "password");
+        if (bindingResult.hasErrors()) {
+            bindingDataDropDown(model);
+            return "add_edit_user";
+        } else {
+            userService.editUser(user, userId);
+            model.addAttribute("message", messageSource.getMessage("msg.edit.success", null,
+                    LocaleContextHolder.getLocale()));
+            return "info";
+        }
+    }
+
+    private void bindingDataDropDown(Model model) {
+        model.addAttribute("listGroup", groupService.findAll());
+        model.addAttribute("listRole", roleService.findAll());
+        model.addAttribute("listJapanLevel", japanLevelService.findAll());
+    }
+
+    @PostMapping("/user/{id}/delete")
+    public String deleteUser(@PathVariable(value = "id", required = true) Long userId, Model model) {
+        Optional<User> user = userService.findById(userId);
+        if (user.isEmpty()) {
+            model.addAttribute("message", messageSource.getMessage("msg.user_not_exist", null,
+                    LocaleContextHolder.getLocale()));
+        } else {
+            userService.deleteUserById(userId);
+            model.addAttribute("message", messageSource.getMessage("msg.delete.success", null,
+                    LocaleContextHolder.getLocale()));
+        }
+        return "info";
     }
 }

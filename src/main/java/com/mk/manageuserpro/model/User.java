@@ -28,8 +28,8 @@ public class User {
     @Column(name = "user_id")
     private Long id;
     @Column(name = "user_name")
-    @Length(min = 5, message = "{err.username.min_length}")
     @NotEmpty(message = "{err.username.required}")
+    @Length(min = 5, message = "{err.username.min_length}")
     private String username;
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -37,12 +37,12 @@ public class User {
     @Valid
     private Group group;
     @Column(name = "email")
-    @Email(message = "{err.email.valid")
     @NotEmpty(message = "{err.email.required}")
+    @Email(message = "{err.email.valid")
     private String email;
     @Column(name = "password")
-    @Length(min = 5, message = "{err.password.min_length}")
-    @NotEmpty(message = "{err.password.required}")
+//    @NotEmpty(message = "{err.password.required}")
+//    @Length(min = 5, message = "{err.password.min_length}")
     private String password;
     @Column(name = "name")
     @NotEmpty(message = "{err.name.required}")
@@ -60,5 +60,7 @@ public class User {
     @Valid
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetailJapan userDetailJapan;
+    @Transient
+    private boolean updatePasswordFlag;
 
 }

@@ -1,8 +1,8 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <link href="css/style.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="js/user.js"></script>
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" th:src="@{/js/user.js}"></script>
   <title th:utext="#{label.title}"></title>
 </head>
 <body>
@@ -73,7 +73,7 @@
       </tr>
       <th:block th:each="user : ${listUser}">
         <tr>
-          <td align="right"><a href="#" th:utext="${user.id}"></a></td>
+          <td align="right"><a th:href="@{/user/{id}(id = ${user.id})}" th:utext="${user.id}"></a></td>
           <td th:utext="${user.name}"></td>
           <td align="center" th:utext="${#dates.format(user.birthday, 'dd-MM-yyyy')}"></td>
           <td th:utext="${user.group.groupName}"></td>

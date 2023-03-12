@@ -1,7 +1,6 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
 <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <script src="js/language.js"></script>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="header" th:fragment="head">
@@ -13,9 +12,7 @@
         </div>
 
         <form th:action="@{/logout}" method="get" id="logout">
-            <button class="btn btn-md btn-danger btn-block" name="registration"
-                    type="Submit">Logout
-            </button>
+            <button class="btn btn-md btn-danger btn-block" name="registration"type="Submit">Logout</button>
         </form>
     </div>
 </div>

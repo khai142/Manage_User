@@ -20,7 +20,7 @@ public class UserDetailJapan {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_detail_japan_id")
     private Long userDetailJapanId;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(cascade = CascadeType.MERGE)

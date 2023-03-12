@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserDetailJapanRepository extends JpaRepository<UserDetailJapan, Long> {
+    public UserDetailJapan findByUserId(Long userId);
 
 }

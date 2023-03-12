@@ -1,0 +1,85 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" th:src="@{/js/user.js}"></script>
+  <title th:utext="#{label.title}"></title>
+</head>
+<body>
+  <div th:insert="header :: head"></div>
+
+  <form th:action="@{/user/__${user.id}__/edit}" method="get" name="inputform">
+    <table class="tbl_input" border="0" width="75%" cellpadding="0" cellspacing="0">
+      <tr>
+        <th align="left">
+          <div style="padding-left:100px;" th:utext="#{label.user_info.header}"></div>
+          <div style="padding-left:100px;">&nbsp;</div>
+        </th>
+      </tr>
+      <tr>
+        <td align="left">
+          <div style="padding-left:100px; table-layout: fixed; max-width: 100%">
+            <table border="1" width="70%" class="tbl_input" cellpadding="4" cellspacing="0" style="table-layout: fixed; max-width: 100%">
+              <tr>
+                <td th:utext="#{label.username} + ':'"></td>
+                <td align="left" th:utext="${user.username}"></td>
+              </tr>
+              <tr>
+                <td th:utext="#{label.home.list.group} + ':'"></td>
+                <td align="left" style="word-wrap: break-word" th:utext="${user.group.groupName}"></td>
+              </tr>
+              <tr>
+                <td th:utext="#{label.home.list.name} + ':'"></td>
+                <td align="left" style="word-wrap: break-word" th:utext="${user.name}"></td>
+              </tr>
+              <tr>
+                <td th:utext="#{label.home.list.birthday} + ':'"></td>
+                <td align="left" th:utext="${user.birthday}"></td>
+              </tr>
+              <tr>
+                <td th:utext="#{label.home.list.mail} + ':'"></td>
+                <td align="left" style="word-wrap: break-word" th:utext="${user.email}"></td>
+              </tr>
+              <tr class="japan_infor">
+                <td th:utext="#{label.add_edit_user.qualification} + ':'"></td>
+                <td align="left" style="word-wrap: break-word" th:utext="${user.userDetailJapan?.japanLevel?.nameLevel}"></td>
+              </tr>
+              <tr class="japan_infor">
+                <td th:utext="#{label.add_edit_user.qualification_date} + ':'"></td>
+                <td align="left" th:utext="${user.userDetailJapan?.startDate}"></td>
+              </tr>
+              <tr class="japan_infor">
+                <td th:utext="#{label.home.list.expire_date} + ':'"></td>
+                <td align="left" th:utext="${user.userDetailJapan?.endDate}"></td>
+              </tr>
+              <tr class="japan_infor">
+                <td th:utext="#{label.home.list.score} + ':'"></td>
+                <td align="left" th:utext="${user.userDetailJapan?.score}"></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div style="padding-left:100px;">&nbsp;</div>
+
+    <div style="padding-left:100px;">
+      <table border="0" cellpadding="4" cellspacing="0" width="300px">
+        <tr>
+          <th width="200px" align="center">&nbsp;</th>
+          <td>
+            <input class="btn" type="submit" th:value="#{label.user_info.edit}" />
+          </td>
+          <td>
+            <input class="btn" type="button" th:attr="data-message-confirm-delete=#{msg.confirm_delete}, data-url=@{/user/__${user.id}__/delete}"
+                   onclick="confirmDelete(this)" th:value="#{label.user_info.delete}" />
+          </td>
+          <td>
+            <a th:href="@{/users}"><input class="btn" type="button" th:value="#{label.add_edit_user.back}" /></a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </form>
+</body>
+</html>
