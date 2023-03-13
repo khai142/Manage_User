@@ -1,8 +1,31 @@
 @CHARSET "UTF-8";
+html, body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+}
 #header{
 	display: flex;
 	justify-content: space-between;
-	align-items: center
+	align-items: center;
+	background: linear-gradient(90deg, rgba(21,14,142,1) 0%, rgba(53,128,189,0.8481443602831757) 50%, rgba(65,71,236,0.17027321182379207) 100%);
+	padding: 10px;
+	border-bottom: 2px solid blue;
+}
+#header-left{
+	display: flex;
+	align-items: flex-end;
+}
+#logo{
+	width: 90px;
+	height: 70px;
+}
+#header-text{
+	color: white;
 }
 #header-right{
 	display: flex;
@@ -10,8 +33,21 @@
 	justify-content: space-between;
 	align-items: center
 }
+#label-welcome{
+	margin-top: 8px;
+}
 #logout{
-	margin-top: 20px;
+	margin-top: 8px;
+}
+.language {
+	padding: 5px;
+}
+.content{
+	flex-grow: 1;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 30px;
+	background-image: url("../images/background.jpg");
 }
 .tbl {
 	font-size: 12px;

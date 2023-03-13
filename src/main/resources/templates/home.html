@@ -7,14 +7,10 @@
 </head>
 <body>
   <div th:insert="header :: head"></div>
+  <div class="content">
   <!-- Begin search condition -->
   <form th:action="@{/users}" method="get" name="mainform">
     <table class="tbl_input" border="0" width="90%" cellpadding="0" cellspacing="0">
-      <tr>
-        <td>
-          &nbsp;
-        </td>
-      </tr>
       <tr>
         <td th:utext="#{label.home.home_header}"></td>
       </tr>
@@ -119,6 +115,6 @@
     </script>
   </th:block>
   <!-- End paging -->
-
+  </div>
 </body>
 </html>

@@ -7,7 +7,7 @@
 </head>
 <body>
   <div th:insert="header :: head"></div>
-
+  <div class="content">
   <form th:action="@{/user/__${user.id}__/edit}" method="get" name="inputform">
     <table class="tbl_input" border="0" width="75%" cellpadding="0" cellspacing="0">
       <tr>
@@ -81,5 +81,6 @@
       </table>
     </div>
   </form>
+  </div>
 </body>
 </html>

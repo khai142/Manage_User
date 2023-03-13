@@ -1,14 +1,22 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="header" th:fragment="head">
-    <h1 th:utext="#{label.welcome}"></h1>
+    <div id="header-left">
+        <img id="logo" th:src="@{/images/User.png}">
+        <h1 id="header-text" th:utext="#{label.title}"></h1>
+    </div>
     <div id="header-right">
         <div id="multi-lang">
-            <a href="?lang=en">English</a>
-            <a href="?lang=ja">Japanese</a>
+            <a class="language" href="?lang=en">English</a>
+            <a class="language" href="?lang=ja">Japanese</a>
+        </div>
+        <div id="label-welcome" >
+            <span th:utext="#{label.welcome} + ', '"></span>
+            <span sec:authentication="name"></span>
         </div>
 
         <form th:action="@{/logout}" method="get" id="logout">
