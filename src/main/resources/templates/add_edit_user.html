@@ -13,6 +13,7 @@
       <tr>
         <th align="left">
           <div style="padding-left:100px;" th:utext="#{label.add_edit_user.header}"></div>
+          <div style="padding-left:100px;">&nbsp;</div>
         </th>
       </tr>
       <tr>
@@ -123,24 +124,34 @@
                   <span th:utext="#{label.password} + ':'"></span>
                 </td>
                 <td align="left">
-                  <th:block th:if="*{id == null}">
+                  <th:block th:if="*{id == null or updatePasswordFlag}">
                     <input class="txBox input_password" type="password" th:field="*{password}" size="30" value=""
                            onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" />
                   </th:block>
-                  <th:block th:unless="*{id == null}">
+                  <th:block th:unless="*{id == null or updatePasswordFlag}">
                     <input class="txBox input_password" type="password" th:field="*{password}" size="30"
                            onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" readonly="readonly"/>
                   </th:block>
                   <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message"></label>
                 </td>
               </tr>
-  <!--              <tr>-->
-  <!--                <td class="lbl_left">パスワード（確認）:</td>-->
-  <!--                <td align="left">-->
-  <!--                  <input class="txBox" type="password" name="passwordConfirm" value="" size="30"-->
-  <!--                         onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" />-->
-  <!--                </td>-->
-  <!--              </tr>-->
+              <tr>
+                <td class="lbl_left">
+                  <font color="red" th:if="*{id == null}">*</font>
+                  <span th:utext="#{label.add_edit_user.password_confirm} + ':'"></span>
+                </td>
+                <td align="left">
+                  <th:block th:if="*{id == null or updatePasswordFlag}">
+                    <input class="txBox input_password" type="password" th:field="*{passwordConfirm}" size="30" value=""
+                           onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" />
+                  </th:block>
+                  <th:block th:unless="*{id == null or updatePasswordFlag}">
+                    <input class="txBox input_password" type="password" th:field="*{passwordConfirm}" size="30"
+                           onfocus="this.style.borderColor='#0066ff';" onblur="this.style.borderColor='#aaaaaa';" readonly="readonly"/>
+                  </th:block>
+                  <label th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}" class="validation-message"></label>
+                </td>
+              </tr>
               <tr>
                 <th align="left" colspan="2" th:utext="#{label.home.list.japan_level}"></th>
               </tr>

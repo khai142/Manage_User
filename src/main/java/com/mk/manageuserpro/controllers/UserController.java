@@ -97,15 +97,19 @@ public class UserController {
     }
 
     private void validatePassword(User user, BindingResult bindingResult) {
-        if (Common.isEmpty(user.getPassword())) {
+        String password = user.getPassword();
+        if (Common.isEmpty(password)) {
             bindingResult
                     .rejectValue("password", "error.user",
                             messageSource.getMessage("err.password.required", null, LocaleContextHolder.getLocale()));
-        }
-        if (user.getPassword().length() < 5) {
+        } else if (password.length() < 5) {
             bindingResult
                     .rejectValue("password", "error.user",
                             messageSource.getMessage("err.password.min_length", null, LocaleContextHolder.getLocale()));
+        } else if (!password.equals(user.getPasswordConfirm())) {
+            bindingResult
+                    .rejectValue("passwordConfirm", "error.user",
+                            messageSource.getMessage("err.password_confirm.wrong", null, LocaleContextHolder.getLocale()));
         }
     }
 

@@ -44,6 +44,10 @@ public class User {
 //    @NotEmpty(message = "{err.password.required}")
 //    @Length(min = 5, message = "{err.password.min_length}")
     private String password;
+    @Transient
+//    @NotEmpty(message = "{err.password.required}")
+//    @Length(min = 5, message = "{err.password.min_length}")
+    private String passwordConfirm;
     @Column(name = "name")
     @NotEmpty(message = "{err.name.required}")
     private String name;
